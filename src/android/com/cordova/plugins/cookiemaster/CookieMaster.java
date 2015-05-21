@@ -9,14 +9,11 @@ import org.json.JSONException;
 
 import android.util.Log;
 
-import org.apache.http.client.CookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 
-import java.util.List;
+import java.net.HttpCookie;
+
+import android.webkit.CookieManager;
 
 public class CookieMaster extends CordovaPlugin {
 
@@ -34,20 +31,20 @@ public class CookieMaster extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
             try {
-              DefaultHttpClient client = new DefaultHttpClient();
-              HttpGet request = new HttpGet(url);
-              HttpResponse response = client.execute(request);
-              
-              CookieStore cookieStore = client.getCookieStore();
-              List<Cookie> cookies = cookieStore.getCookies();
+              CookieManager cookieManager = CookieManager.getInstance();
+              String[] cookies = cookieManager.getCookie(url).split("; ");
+              String cookieValue = "";
+
+              for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].contains(cookieName + "=")) {
+                  cookieValue = cookies[i].split("=")[1].trim();
+                  break;
+                }
+              }
               
               JSONObject json = null;
-              for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(cookieName)) {
-                  String value = cookie.getValue();
-                  Log.v(TAG, cookieName + ": " + value);
-                  json = new JSONObject("{cookieValue:" + value + "}");
-                }
+              if (cookieValue != "") {
+                json = new JSONObject("{cookieValue:\"" + cookieValue + "\"}");
               }
               if (json != null) {
                 PluginResult res = new PluginResult(PluginResult.Status.OK, json);
@@ -70,16 +67,11 @@ public class CookieMaster extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
             try {
-              DefaultHttpClient client = new DefaultHttpClient();
-              HttpGet request = new HttpGet(url);
-              HttpResponse response = client.execute(request);
-              
-              CookieStore cookieStore = client.getCookieStore();
+              HttpCookie cookie = new HttpCookie(cookieName, cookieValue);
 
-              BasicClientCookie cookie = new BasicClientCookie(cookieName, cookieValue);
-              cookie.setDomain(url);
-
-              cookieStore.addCookie(cookie);
+              String cookieString = cookie.toString().replace("\"", "");
+              CookieManager cookieManager = CookieManager.getInstance();
+              cookieManager.setCookie(url, cookieString);
               
               PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
               callbackContext.sendPluginResult(res);        
