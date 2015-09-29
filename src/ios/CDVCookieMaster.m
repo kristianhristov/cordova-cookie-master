@@ -51,11 +51,11 @@
     NSString* cookieName = [command.arguments objectAtIndex:1];
     NSString* cookieValue = [command.arguments objectAtIndex:2];
 
-     NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
-     [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
-     [cookieProperties setObject:cookieValue forKey:NSHTTPCookieValue];
-     [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
-     [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
+    NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+    [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
+    [cookieProperties setObject:cookieValue forKey:NSHTTPCookieValue];
+    [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
+    [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
 
     NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
