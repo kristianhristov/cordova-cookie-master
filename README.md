@@ -2,7 +2,7 @@ Cookie Master
 ==============
 
 As you may already know, WebViews on Android and iOS platforms do not support regular use of <code>document.cookie</code> for managing the cookies in your app. This plugin allows you to get and set cookie values from your WebView through a simple interface.
- 
+
 ## Supported Platforms
 * Android
 * iOS
@@ -26,13 +26,29 @@ cookieMaster.getCookieValue('http://<some host>:<some port>', '<cookie name>', f
 ```
 ### Set cookie value
 ```javascript
-cookieMaster.setCookieValue('http://<some host>:<some port>', '<cookie name>', '<cookie value>');
+cookieMaster.setCookieValue('http://<some host>:<some port>', '<cookie name>', '<cookie value>',
+    function() {
+        console.log('A cookie has been set');
+    },
+    function(error) {
+        console.log('Error setting cookie: '+error);
+    });
 ```
 The cookie value should be formatted just like a regular <code>document.cookie</code> value.
 
+### Clear all cookies
+```javascript
+cookieMaster.clearCookies(
+    function() {
+    console.log('Cookies have been cleared');
+    },
+    function() {
+        console.log('Cookies could not be cleared');
+    });
+```
+
 ## Limitations
-* This plugin does not provide a remove cookie mechanism as this may be achieved by setting a date in the past for the value (same way you would do it with <code>document.cookie</code>).
-* This version has been tested on Android 4.4, iOS 7.1 and iOS 8 devices. Experience may vary for different OS versions.
+* This version has been tested on Android 4.4 ~ 5.1 devices, iOS 7.1 ~ 9 devices. Experience may vary for different OS versions.
 
 
 ## License
