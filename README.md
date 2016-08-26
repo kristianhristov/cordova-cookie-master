@@ -40,7 +40,7 @@ The cookie value should be formatted just like a regular <code>document.cookie</
 
 ### Clear all cookies
 ```javascript
-cookieMaster.clearCookies(
+cookieMaster.clear(
     function() {
     console.log('Cookies have been cleared');
     },
