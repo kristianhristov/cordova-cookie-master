@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.cordova.plugins.cookieemperor" version="1.0.0">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="de.rouvenkruse.cordova.plugins.cookieemperor" version="1.0.0">
     <name>CookieEmperor</name>
     <description>Since the original cookie-master is no longer maintained, I forked this project to make it run within the latest SDK (deprecated errors)</description>
     <license>MIT</license>
