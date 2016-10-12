@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-           id="com.cordova.plugins.cookiemaster"
-      version="1.0.0">
-    <name>CookieMaster</name>
-    <description>This plugin enables the management of cookies in WebViews on iOS and Android as those platforms restrict the use of "document.cookie".</description>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.cordova.plugins.cookieemperor" version="1.0.0">
+    <name>CookieEmperor</name>
+    <description>Since the original cookie-master is no longer maintained, I forked this project to make it run within the latest SDK (deprecated errors)</description>
     <license>MIT</license>
 
-    <keywords>cordova,phonegap,cookie,cookies,cookie-manager,cookie-plugin</keywords>
+    <keywords>cordova,phonegap,cookie,cookies,cookie-manager,cookie-plugin,cookie-emperor</keywords>
 
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines> 
  
-    <js-module src="www/cookieMaster.js" name="cookieMaster">
-        <clobbers target="cookieMaster" />
+    <js-module src="www/cookieEmperor.js" name="cookieEmperor">
+        <clobbers target="cookieEmperor" />
     </js-module>
     
     <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
-            <feature name="CookieMaster">
-                <param name="ios-package" value="CDVCookieMaster"/>
+            <feature name="CookieEmperor">
+                <param name="ios-package" value="CDVCookieEmperor"/>
             </feature>
         </config-file>
-        <header-file src="src/ios/CDVCookieMaster.h" />
-        <source-file src="src/ios/CDVCookieMaster.m" />                      
+        <header-file src="src/ios/CDVCookieEmperor.h" />
+        <source-file src="src/ios/CDVCookieEmperor.m" />
     </platform>
     
     <!-- android -->
@@ -35,11 +33,11 @@
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         </config-file>
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="CookieMaster">
-                <param name="android-package" value="com.cordova.plugins.cookiemaster.CookieMaster"/>
+            <feature name="CookieEmperor">
+                <param name="android-package" value="de.rouvenkruse.cordova.plugins.cookieemperor.CookieEmperor"/>
             </feature>
         </config-file>
  
-        <source-file src="src/android/com/cordova/plugins/cookiemaster/CookieMaster.java" target-dir="src/com/cordova/plugins/cookiemaster" />      
+        <source-file src="src/android/de/rouvenkruse/cordova/plugins/cookieemperor/CookieEmperor.java" target-dir="src/de/rouvenkruse/cordova/plugins/cookieemperor" />
     </platform>          
 </plugin>

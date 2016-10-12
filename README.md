@@ -3,7 +3,11 @@ IMPORTANT: This plugin is no longer maintained. It is possible that some functio
 Cookie Master
 ==============
 
-As you may already know, WebViews on Android and iOS platforms do not support regular use of <code>document.cookie</code> for managing the cookies in your app. This plugin allows you to get and set cookie values from your WebView through a simple interface.
+Since cordova apps should not live without the Crosswalk Project anymore and the InAppBrowser-plugin does not use the XWalk webview sharing cookies is not that easy. Setting up cookies via
+document.cookie does not provide the expected result and thus the CookieMaster was born. Since CookieMaster is no longer maintained and cannot be build with android sdk < 23 (without gradle hacks)
+I came to the conclusion to fork this project and keep it maintained to a certain level.
+
+Feel free to contribute, pull-requests will be reviewed.
 
 ## Supported Platforms
 * Android
@@ -13,12 +17,12 @@ As you may already know, WebViews on Android and iOS platforms do not support re
 
 Install with Cordova CLI
 
-    $ cordova plugin add https://github.com/kristianhristov/cordova-cookie-master.git
+    $ cordova plugin add https://github.com/rtk/cordova-cookie-emperor.git
 
 ## Usage
 ### Get cookie value
 ```javascript
-cookieMaster.getCookieValue('http://<some host>:<some port>', '<cookie name>', function(data) {
+CookieEmperor.getValue('http://<some host>:<some port>', '<cookie name>', function(data) {
   console.log(data.cookieValue);
 }, function(error) {
   if (error) {
@@ -28,7 +32,7 @@ cookieMaster.getCookieValue('http://<some host>:<some port>', '<cookie name>', f
 ```
 ### Set cookie value
 ```javascript
-cookieMaster.setCookieValue('http://<some host>:<some port>', '<cookie name>', '<cookie value>',
+cookieMaster.setCookie('http://<some host>:<some port>', '<cookie name>', '<cookie value>',
     function() {
         console.log('A cookie has been set');
     },
@@ -40,7 +44,7 @@ The cookie value should be formatted just like a regular <code>document.cookie</
 
 ### Clear all cookies
 ```javascript
-cookieMaster.clearCookies(
+cookieMaster.clearAll(
     function() {
     console.log('Cookies have been cleared');
     },
@@ -49,12 +53,8 @@ cookieMaster.clearCookies(
     });
 ```
 
-## Limitations
-* This version has been tested on Android 4.4 ~ 5.1 devices, iOS 7.1 ~ 9 devices. Experience may vary for different OS versions.
-
-
 ## License
 This plugin is distributed under the MIT License.
 
 ## Thanks to
-This plugin was inspired by the great work on the CookieMonster plugin by @barrettc
+This plugin is forked from https://github.com/kristianhristov/cordova-cookie-master

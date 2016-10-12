@@ -1,23 +1,16 @@
-//
-//  CDVCookieMaster.m
-//
-//
-//  Created by Kristian Hristov on 12/16/14.
-//
-//
+#import "CDVCookieEmperor.h"
 
-#import "CDVCookieMaster.h"
-
-
-@implementation CDVCookieMaster
+@implementation CDVCookieEmperor
 
  - (void)getCookieValue:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
+
     NSString* urlString = [command.arguments objectAtIndex:0];
     __block NSString* cookieName = [command.arguments objectAtIndex:1];
 
-    if (urlString != nil) {
+    if (urlString != nil)
+    {
         NSArray* cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlString]];
         __block NSString *cookieValue;
 
@@ -30,15 +23,22 @@
                 *stop = YES;
             }
         }];
-        if (cookieValue != nil) {
+
+        if (cookieValue != nil)
+        {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"cookieValue":cookieValue}];
-        } else {
+        }
+        else
+        {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No cookie found"];
         }
 
-    } else {
+    }
+    else
+    {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL was null"];
     }
+
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -52,6 +52,7 @@
     NSString* cookieValue = [command.arguments objectAtIndex:2];
 
     NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+
     [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
     [cookieProperties setObject:cookieValue forKey:NSHTTPCookieValue];
     [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
@@ -73,9 +74,12 @@
 {
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]) {
+
+    for (cookie in [storage cookies])
+    {
         [storage deleteCookie:cookie];
     }
+
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
