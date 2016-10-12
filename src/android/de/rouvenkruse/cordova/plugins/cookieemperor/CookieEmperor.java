@@ -56,7 +56,7 @@ public class CookieEmperor extends CordovaPlugin {
      * @param callbackContext
      * @return
      */
-    private boolean getCookie(JSONArray args, CallbackContext callbackContext) {
+    private boolean getCookie(JSONArray args, final CallbackContext callbackContext) {
         try {
             final String url = args.getString(0);
             final String cookieName = args.getString(1);
@@ -112,7 +112,7 @@ public class CookieEmperor extends CordovaPlugin {
      * @param callbackContext
      * @return boolean
      */
-    private boolean setCookie(JSONArray args, CallbackContext callbackContext) {
+    private boolean setCookie(JSONArray args, final CallbackContext callbackContext) {
         try {
             final String url = args.getString(0);
             final String cookieName = args.getString(1);
