@@ -8,18 +8,14 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.os.Build;
 import android.webkit.CookieManager;
 
 public class CookieEmperor extends CordovaPlugin {
+
     public static final String ACTION_GET_COOKIE_VALUE = "getCookieValue";
     public static final String ACTION_SET_COOKIE_VALUE = "setCookieValue";
     public static final String ACTION_CLEAR_COOKIES = "clearCookies";
-
-    private CookieManager cookieManager;
-
-    public CookieEmperor() {
-        this.cookieManager = CookieManager.getInstance();
-    }
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -30,7 +26,18 @@ public class CookieEmperor extends CordovaPlugin {
             return this.setCookie(args, callbackContext);
         }
         else if (ACTION_CLEAR_COOKIES.equals(action)) {
-            return this.clearAllCookies();
+            CookieManager cookieManager = CookieManager.getInstance();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                cookieManager.removeAllCookies();
+                cookieManager.flush();
+            }
+            else {
+                cookieManager.removeAllCookie();
+                cookieManager.removeSessionCookie();
+            }
+
+            callbackContext.success();
         }
 
         callbackContext.error("Invalid action");
@@ -103,7 +110,8 @@ public class CookieEmperor extends CordovaPlugin {
                 .execute(new Runnable() {
                     public void run() {
                         try {
-                            this.cookieManager.setCookie(url, cookieName + "=" + cookieValue);
+                            CookieManager cookieManager = CookieManager.getInstance();
+                            cookieManager.setCookie(url, cookieName + "=" + cookieValue);
 
                             PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
                             callbackContext.sendPluginResult(res);
@@ -113,25 +121,6 @@ public class CookieEmperor extends CordovaPlugin {
                         }
                     }
                 });
-
-        return true;
-    }
-
-    /**
-     * Clears all cookies
-     * @return boolean
-     */
-    private boolean clearAllCookies() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            this.cookieManager.removeAllCookies();
-            this.cookieManager.flush();
-        }
-        else {
-            this.cookieManager.removeAllCookie();
-            this.cookieManager.removeSessionCookie();
-        }
-
-        callbackContext.success();
 
         return true;
     }
