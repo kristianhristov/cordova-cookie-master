@@ -18,9 +18,11 @@ Install with Cordova CLI
     $ cordova plugin add https://github.com/rtk/cordova-cookie-emperor.git
 
 ## Usage
+A global object cookieEmperor will be bound to the window object.
+
 ### Get cookie value
 ```javascript
-CookieEmperor.getValue('http://<some host>:<some port>', '<cookie name>', function(data) {
+window.cookieEmperor.getValue('http://<some host>:<some port>', '<cookie name>', function(data) {
   console.log(data.cookieValue);
 }, function(error) {
   if (error) {
@@ -30,7 +32,7 @@ CookieEmperor.getValue('http://<some host>:<some port>', '<cookie name>', functi
 ```
 ### Set cookie value
 ```javascript
-cookieMaster.setCookie('http://<some host>:<some port>', '<cookie name>', '<cookie value>',
+window.cookieEmperor.setCookie('http://<some host>:<some port>', '<cookie name>', '<cookie value>',
     function() {
         console.log('A cookie has been set');
     },
@@ -42,7 +44,7 @@ The cookie value should be formatted just like a regular <code>document.cookie</
 
 ### Clear all cookies
 ```javascript
-cookieMaster.clearAll(
+window.cookieEmperor.clearAll(
     function() {
     console.log('Cookies have been cleared');
     },
