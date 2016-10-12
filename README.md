@@ -1,6 +1,4 @@
-IMPORTANT: This plugin is no longer maintained. It is possible that some functionality may be deprecated in newer target SDKs.
-
-Cookie Master
+Cookie Emperor
 ==============
 
 Since cordova apps should not live without the Crosswalk Project anymore and the InAppBrowser-plugin does not use the XWalk webview sharing cookies is not that easy. Setting up cookies via
