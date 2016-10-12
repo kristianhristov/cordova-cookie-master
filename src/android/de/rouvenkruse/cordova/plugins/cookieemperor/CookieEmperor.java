@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.os.Build;
+import android.webkit.ValueCallback;
 import android.webkit.CookieManager;
 
 public class CookieEmperor extends CordovaPlugin {
@@ -29,15 +30,21 @@ public class CookieEmperor extends CordovaPlugin {
             CookieManager cookieManager = CookieManager.getInstance();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                cookieManager.removeAllCookies();
+                cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
+                    @Override
+                    public void onReceiveValue(Boolean value) {
+                        callbackContext.success();
+                    }
+                });
+
                 cookieManager.flush();
             }
             else {
                 cookieManager.removeAllCookie();
                 cookieManager.removeSessionCookie();
-            }
 
-            callbackContext.success();
+                callbackContext.success();
+            }
         }
 
         callbackContext.error("Invalid action");
