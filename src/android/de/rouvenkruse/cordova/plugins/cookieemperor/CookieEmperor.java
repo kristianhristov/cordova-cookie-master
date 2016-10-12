@@ -32,9 +32,7 @@ public class CookieEmperor extends CordovaPlugin {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
                     @Override
-                    public void onReceiveValue(Boolean value) {
-                        callbackContext.success();
-                    }
+                    public void onReceiveValue(Boolean value) {}
                 });
 
                 cookieManager.flush();
@@ -42,9 +40,9 @@ public class CookieEmperor extends CordovaPlugin {
             else {
                 cookieManager.removeAllCookie();
                 cookieManager.removeSessionCookie();
-
-                callbackContext.success();
             }
+
+            callbackContext.success();
         }
 
         callbackContext.error("Invalid action");
@@ -59,46 +57,53 @@ public class CookieEmperor extends CordovaPlugin {
      * @return
      */
     private boolean getCookie(JSONArray args, CallbackContext callbackContext) {
-        final String url = args.getString(0);
-        final String cookieName = args.getString(1);
+        try {
+            final String url = args.getString(0);
+            final String cookieName = args.getString(1);
 
-        cordova
-                .getThreadPool()
-                .execute(new Runnable() {
-                    public void run() {
-                        try {
-                            CookieManager cookieManager = CookieManager.getInstance();
-                            String[] cookies = cookieManager.getCookie(url).split("; ");
-                            String cookieValue = "";
+            cordova
+                    .getThreadPool()
+                    .execute(new Runnable() {
+                        public void run() {
+                            try {
+                                CookieManager cookieManager = CookieManager.getInstance();
+                                String[] cookies = cookieManager.getCookie(url).split("; ");
+                                String cookieValue = "";
 
-                            for (int i = 0; i < cookies.length; i++) {
-                                if (cookies[i].contains(cookieName + "=")) {
-                                    cookieValue = cookies[i].split("=")[1].trim();
-                                    break;
+                                for (int i = 0; i < cookies.length; i++) {
+                                    if (cookies[i].contains(cookieName + "=")) {
+                                        cookieValue = cookies[i].split("=")[1].trim();
+                                        break;
+                                    }
+                                }
+
+                                JSONObject json = null;
+
+                                if (cookieValue != "") {
+                                    json = new JSONObject("{cookieValue:\"" + cookieValue + "\"}");
+                                }
+
+                                if (json != null) {
+                                    PluginResult res = new PluginResult(PluginResult.Status.OK, json);
+                                    callbackContext.sendPluginResult(res);
+                                }
+                                else {
+                                    callbackContext.error("Cookie not found!");
                                 }
                             }
-
-                            JSONObject json = null;
-
-                            if (cookieValue != "") {
-                                json = new JSONObject("{cookieValue:\"" + cookieValue + "\"}");
-                            }
-
-                            if (json != null) {
-                                PluginResult res = new PluginResult(PluginResult.Status.OK, json);
-                                callbackContext.sendPluginResult(res);
-                            }
-                            else {
-                                callbackContext.error("Cookie not found!");
+                            catch (Exception e) {
+                                callbackContext.error(e.getMessage());
                             }
                         }
-                        catch (Exception e) {
-                            callbackContext.error(e.getMessage());
-                        }
-                    }
-                });
+                    });
 
-        return true;
+            return true;
+        }
+        catch(JSONException) {
+            callbackContext.error("JSON parsing error");
+        }
+
+        return false;
     }
 
     /**
@@ -108,27 +113,34 @@ public class CookieEmperor extends CordovaPlugin {
      * @return boolean
      */
     private boolean setCookie(JSONArray args, CallbackContext callbackContext) {
-        final String url = args.getString(0);
-        final String cookieName = args.getString(1);
-        final String cookieValue = args.getString(2);
+        try {
+            final String url = args.getString(0);
+            final String cookieName = args.getString(1);
+            final String cookieValue = args.getString(2);
 
-        cordova
-                .getThreadPool()
-                .execute(new Runnable() {
-                    public void run() {
-                        try {
-                            CookieManager cookieManager = CookieManager.getInstance();
-                            cookieManager.setCookie(url, cookieName + "=" + cookieValue);
+            cordova
+                    .getThreadPool()
+                    .execute(new Runnable() {
+                        public void run() {
+                            try {
+                                CookieManager cookieManager = CookieManager.getInstance();
+                                cookieManager.setCookie(url, cookieName + "=" + cookieValue);
 
-                            PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
-                            callbackContext.sendPluginResult(res);
+                                PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
+                                callbackContext.sendPluginResult(res);
+                            }
+                            catch (Exception e) {
+                                callbackContext.error(e.getMessage());
+                            }
                         }
-                        catch (Exception e) {
-                            callbackContext.error(e.getMessage());
-                        }
-                    }
-                });
+                    });
 
-        return true;
+            return true;
+        }
+        catch(JSONException) {
+            callbackContext.error("JSON parsing error");
+        }
+
+        return false;
     }
 }
