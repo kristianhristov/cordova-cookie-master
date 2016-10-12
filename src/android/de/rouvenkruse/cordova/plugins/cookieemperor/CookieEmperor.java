@@ -99,7 +99,7 @@ public class CookieEmperor extends CordovaPlugin {
 
             return true;
         }
-        catch(JSONException) {
+        catch(JSONException e) {
             callbackContext.error("JSON parsing error");
         }
 
@@ -137,7 +137,7 @@ public class CookieEmperor extends CordovaPlugin {
 
             return true;
         }
-        catch(JSONException) {
+        catch(JSONException e) {
             callbackContext.error("JSON parsing error");
         }
 
