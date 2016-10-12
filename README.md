@@ -22,7 +22,7 @@ A global object cookieEmperor will be bound to the window object.
 
 ### Get cookie value
 ```javascript
-window.cookieEmperor.getValue('http://<some host>:<some port>', '<cookie name>', function(data) {
+window.cookieEmperor.getCookie('http://<some host>:<some port>', '<cookie name>', function(data) {
   console.log(data.cookieValue);
 }, function(error) {
   if (error) {

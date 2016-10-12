@@ -2,9 +2,9 @@
  * CookieEmperor
  * @constructor
  */
-function CookieEmperor() {
+function CookieEmperor(pluginName) {
     this.version = 1;
-    this.pluginName = 'CookieEmperor';
+    this.pluginName = pluginName;
 }
 
 /**
@@ -43,4 +43,4 @@ CookieEmperor.prototype.clearAll = function(successCallback, errorCallback) {
  * export default CookieEmperor
  * @type {CookieEmperor}
  */
-module.exports = CookieEmperor;
+module.exports = new CookieEmperor('CookieEmperor');
