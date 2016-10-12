@@ -8,17 +8,18 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import org.apache.http.cookie.Cookie;
-
-import java.net.HttpCookie;
-
 import android.webkit.CookieManager;
 
-public class CookieMaster extends CordovaPlugin {
-
+public class CookieEmperor extends CordovaPlugin {
     public static final String ACTION_GET_COOKIE_VALUE = "getCookieValue";
     public static final String ACTION_SET_COOKIE_VALUE = "setCookieValue";
     public static final String ACTION_CLEAR_COOKIES = "clearCookies";
+
+    private CookieManager cookieManager;
+
+    public CookieEmperor() {
+        this.cookieManager = CookieManager.getInstance();
+    }
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -102,11 +103,7 @@ public class CookieMaster extends CordovaPlugin {
                 .execute(new Runnable() {
                     public void run() {
                         try {
-                            HttpCookie cookie = new HttpCookie(cookieName, cookieValue);
-
-                            String cookieString = cookie.toString().replace("\"", "");
-                            CookieManager cookieManager = CookieManager.getInstance();
-                            cookieManager.setCookie(url, cookieString);
+                            this.cookieManager.setCookie(url, cookieName + "=" + cookieValue);
 
                             PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
                             callbackContext.sendPluginResult(res);
@@ -125,15 +122,13 @@ public class CookieMaster extends CordovaPlugin {
      * @return boolean
      */
     private boolean clearAllCookies() {
-        CookieManager cookieManager = CookieManager.getInstance();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            cookieManager.removeAllCookies();
-            cookieManager.flush();
+            this.cookieManager.removeAllCookies();
+            this.cookieManager.flush();
         }
         else {
-            cookieManager.removeAllCookie();
-            cookieManager.removeSessionCookie();
+            this.cookieManager.removeAllCookie();
+            this.cookieManager.removeSessionCookie();
         }
 
         callbackContext.success();
