@@ -9,8 +9,6 @@ import org.json.JSONException;
 
 import android.util.Log;
 
-import org.apache.http.cookie.Cookie;
-
 import java.net.HttpCookie;
 
 import android.webkit.CookieManager;
