@@ -22,5 +22,9 @@
     "cordova-ios"
   ],
   "author": "Rouven Kruse",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RTK/cordova-cookie-emperor/issues"
+  },
+  "homepage": "https://github.com/RTK/cordova-cookie-emperor#readme"
 }
